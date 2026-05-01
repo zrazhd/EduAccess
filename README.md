@@ -91,7 +91,7 @@ MIT was chosen because it allows schools, NGOs, and developers to freely use, mo
 
 ## AI Usage Disclosure
 
-Claude was used to assist with language editing and code structure suggestions. All design decisions, the project concept, and final content reflect the team's own analysis and understanding of the course material.
+Claude was used to assist with language editing, code structure suggestions and design documentation. All other design decisions, the project concept, and final content reflect the team's own analysis and understanding of the course material.
 
 ---
 
