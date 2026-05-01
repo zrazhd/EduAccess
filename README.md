@@ -57,6 +57,15 @@ EduAccess directly supports this goal by making educational materials accessible
 ### Setup
 
 ```
+git clone https://github.com/zrazhd/EduAccess
+cd eduaccess
+```
+```
+npm init -y
+npm install express multer cors
+```
+```
+node server.js
 ```
 
 ### Teacher access
@@ -68,6 +77,13 @@ EduAccess directly supports this goal by making educational materials accessible
 ## Project structure
 
 ```
+eduaccess/
+├── uploads/         # Directory for uploaded files (auto-generated)
+├── public/
+│   └── index.html   # Frontend interface and application logic
+├── server.js        # Node.js backend server
+├── package.json     # Project dependencies and scripts
+└── .gitignore       # Git exclusion rules (node_modules, etc.)
 ```
 
 ---
