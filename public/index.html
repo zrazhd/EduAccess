@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduAccess — Educational Materials</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@400;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #1D9E75;
+    --green-light: #E1F5EE;
+    --green-mid: #0F6E56;
+    --green-dark: #085041;
+    --bg: #F7F9F8;
+    --white: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 4px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  body {
+    font-family: 'Golos Text', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 17px; font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--green);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 18px; height: 18px; fill: white; }
+
+  .mode-switcher {
+    display: flex; gap: 4px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+    margin-left: 8px;
+  }
+  .mode-btn {
+    padding: 5px 16px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 14px; font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .mode-btn.active {
+    background: var(--white);
+    color: var(--text);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  .network-badge {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500;
+    color: var(--green-mid);
+    background: var(--green-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+  .network-dot {
+    width: 7px; height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* BANNER */
+  .banner {
+    max-width: 1100px; margin: 20px auto 0;
+    padding: 0 20px;
+  }
+  .banner-inner {
+    background: var(--green-light);
+    border: 1px solid #9FE1CB;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--green-dark);
+    font-weight: 500;
+  }
+
+  /* STATS */
+  .stats {
+    max-width: 1100px; margin: 20px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    box-shadow: var(--shadow);
+  }
+  .stat-label {
+    font-size: 13px; color: var(--text-muted); margin-bottom: 4px;
+  }
+  .stat-value {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 24px; font-weight: 600;
+    color: var(--text);
+  }
+
+  /* MAIN LAYOUT */
+  main {
+    max-width: 1100px; margin: 0 auto;
+    padding: 0 20px 40px;
+  }
+
+  /* STUDENT VIEW */
+  .section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 18px; font-weight: 600;
+    margin: 24px 0 16px;
+  }
+
+  .filters {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .filter-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 14px; font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .filter-btn:hover { border-color: var(--green); color: var(--green-mid); }
+  .filter-btn.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  .search-bar {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 11px 16px 11px 42px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.18s;
+  }
+  .search-bar input:focus { border-color: var(--green); }
+  .search-icon {
+    position: absolute; left: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .materials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .material-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .material-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .card-top {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 10px;
+  }
+  .subject-tag {
+    font-size: 12px; font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .tag-math    { background: #EEF2FF; color: #4338CA; }
+  .tag-physics { background: #FFF7ED; color: #C2410C; }
+  .tag-history { background: #FEF9C3; color: #854D0E; }
+  .tag-chem    { background: #F0FDF4; color: #166534; }
+  .tag-bio     { background: #F0FDFA; color: #0F766E; }
+  .tag-lang    { background: #FDF4FF; color: #7E22CE; }
+
+  .file-badge {
+    font-size: 11px; font-weight: 700;
+    padding: 4px 8px; border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .badge-pdf { background: #FEE2E2; color: #B91C1C; }
+  .badge-ppt { background: #FFF7ED; color: #C2410C; }
+  .badge-doc { background: #EFF6FF; color: #1D4ED8; }
+
+  .card-title {
+    font-size: 15px; font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .card-meta {
+    font-size: 13px; color: var(--text-muted);
+    margin-bottom: 12px; flex: 1;
+  }
+  .card-footer {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-top: auto;
+  }
+  .downloads-count {
+    font-size: 13px; color: var(--text-muted);
+  }
+  .btn-download {
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 18px;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  .btn-download:hover { background: var(--green-mid); }
+
+  /* TEACHER VIEW */
+  #teacher-view { display: none; }
+
+  .teacher-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .upload-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .upload-card h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 15px; font-weight: 600;
+    margin-bottom: 18px;
+  }
+
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block;
+    font-size: 13px; font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 14px;
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.18s;
+    color: var(--text);
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--green); }
+
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 32px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+    margin-bottom: 14px;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
+  .upload-icon { font-size: 32px; margin-bottom: 8px; }
+  .upload-text { font-size: 14px; color: var(--text-muted); }
+  .upload-text strong { color: var(--green-mid); }
+
+  .btn-primary {
+    width: 100%;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 11px;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  .btn-primary:hover { background: var(--green-mid); }
+
+  .teacher-stats-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .teacher-stats-card h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 15px; font-weight: 600;
+    margin-bottom: 18px;
+  }
+
+  .my-materials-list { display: flex; flex-direction: column; gap: 10px; }
+  .my-material-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+  .my-material-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .my-material-info { flex: 1; }
+  .my-material-name { font-size: 14px; font-weight: 600; }
+  .my-material-meta { font-size: 12px; color: var(--text-muted); }
+  .my-material-downloads { font-size: 13px; color: var(--green-mid); font-weight: 600; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--green-dark);
+    color: white;
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    font-size: 14px; font-weight: 500;
+    box-shadow: var(--shadow-md);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* MODAL */
+  .modal-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px;
+    max-width: 440px; width: 90%;
+    box-shadow: var(--shadow-md);
+  }
+  .modal h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 16px; margin-bottom: 8px;
+  }
+  .modal p { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .btn-cancel {
+    padding: 9px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    font-family: 'Golos Text', sans-serif;
+    font-size: 14px; cursor: pointer;
+  }
+  .btn-confirm {
+    padding: 9px 18px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--green);
+    color: white;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+
+  .empty-state {
+    text-align: center; padding: 48px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state p { font-size: 15px; margin-top: 12px; }
+
+  @media (max-width: 768px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .materials-grid { grid-template-columns: 1fr; }
+    .teacher-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm-7 9.09L12 16.8l7-3.8V13l-7 3.8L5 13v-.91z"/></svg>
+      </div>
+      EduAccess
+    </a>
+    <div class="mode-switcher">
+      <button class="mode-btn active" onclick="switchMode('student', this)">Student</button>
+      <button class="mode-btn" onclick="switchMode('teacher', this)">Teacher</button>
+    </div>
+    <div class="network-badge">
+      <div class="network-dot"></div>
+      Local Network
+    </div>
+  </div>
+</header>
+
+<div class="banner">
+  <div class="banner-inner">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    Works without internet — all materials available through school local network
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="stat-label">Materials</div>
+    <div class="stat-value" id="stat-materials">6</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Subjects</div>
+    <div class="stat-value">6</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Downloads</div>
+    <div class="stat-value" id="stat-downloads">1</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Students online</div>
+    <div class="stat-value" id="stat-online">24</div>
+  </div>
+</div>
+
+<main>
+
+  <!-- STUDENT VIEW -->
+  <div id="student-view">
+    <div class="section-title">Educational Materials</div>
+    <div class="search-bar">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Search by name, subject, class..." oninput="filterMaterials()">
+    </div>
+    <div class="filters" id="filters">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('Mathematics', this)">Mathematics</button>
+      <button class="filter-btn" onclick="setFilter('Physics', this)">Physics</button>
+      <button class="filter-btn" onclick="setFilter('History', this)">History</button>
+      <button class="filter-btn" onclick="setFilter('Chemistry', this)">Chemistry</button>
+      <button class="filter-btn" onclick="setFilter('Biology', this)">Biology</button>
+      <button class="filter-btn" onclick="setFilter('Language', this)">Language</button>
+    </div>
+    <div class="materials-grid" id="materials-grid"></div>
+  </div>
+
+  <!-- TEACHER VIEW -->
+  <div id="teacher-view">
+    <div class="section-title">Teacher Panel</div>
+    <div class="teacher-grid">
+      <div class="upload-card">
+        <h3>Upload Material</h3>
+        <div class="form-group">
+          <label>Material Title</label>
+          <input type="text" id="t-title" placeholder="e.g., Quadratic Equations — tasks">
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select id="t-subject">
+            <option value="">Select subject</option>
+            <option>Mathematics</option>
+            <option>Physics</option>
+            <option>History</option>
+            <option>Chemistry</option>
+            <option>Biology</option>
+            <option>Language</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Class</label>
+          <select id="t-class">
+            <option value="">Select class</option>
+            <option>5 class</option>
+            <option>6 class</option>
+            <option>7 class</option>
+            <option>8 class</option>
+            <option>9 class</option>
+            <option>10 class</option>
+            <option>11 class</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Teacher (Name)</label>
+          <input type="text" id="t-teacher" placeholder="Ivanova A.">
+        </div>
+        <div class="upload-zone" id="upload-zone"
+          onclick="document.getElementById('file-input').click()"
+          ondragover="event.preventDefault(); this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="handleDrop(event)">
+          <div class="upload-icon">📁</div>
+          <div class="upload-text"><strong>Click</strong> or drag file here<br>PDF, PPT, DOC — up to 50 MB</div>
+          <div id="file-name" style="margin-top:8px; font-size:13px; color:var(--green-mid); font-weight:600;"></div>
+        </div>
+        <input type="file" id="file-input" style="display:none" accept=".pdf,.ppt,.pptx,.doc,.docx" onchange="handleFileSelect(event)">
+        <button class="btn-primary" onclick="uploadMaterial()">Upload Material</button>
+      </div>
+
+      <div class="teacher-stats-card">
+        <h3>My Materials</h3>
+        <div class="my-materials-list" id="my-materials-list"></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">Download File?</h3>
+    <p id="modal-body">File will be downloaded via school local network.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-confirm" onclick="confirmDownload()">Download</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+let currentFilter = 'all';
+let pendingDownload = null;
+let totalDownloads = parseInt(localStorage.getItem('total_downloads')) || 1;
+let selectedFile = null;
+
+const SUBJECTS = {
+  'Math': 'tag-math',
+  'Physics': 'tag-physics',
+  'History': 'tag-history',
+  'Chemistry': 'tag-chem',
+  'Biology': 'tag-bio',
+  'Languages': 'tag-lang',
+};
+
+const FILE_BADGES = {
+  'PDF': 'badge-pdf',
+  'PPT': 'badge-ppt',
+  'DOC': 'badge-doc',
+};
+
+const defaultMaterials = [
+  { id: 1, title: 'Quadratic equations — theory and practice', subject: 'Math', grade: 'Grade 9', teacher: 'Ivanova A.', date: 'Apr 28, 2026', type: 'PDF', downloads: 15, file: 'quad_eq.pdf' },
+  { id: 2, title: 'Newton\'s laws — presentation', subject: 'Physics', grade: 'Grade 8', teacher: 'Seitkali M.', date: 'Apr 27, 2026', type: 'PPT', downloads: 9, file: 'newton.pptx' },
+  { id: 3, title: 'Kazakhstan in XX century — notes', subject: 'History', grade: 'Grade 10', teacher: 'Nurlanov B.', date: 'Apr 26, 2026', type: 'DOC', downloads: 7, file: 'kaz_xx.docx' },
+  { id: 4, title: 'Periodic table — tasks', subject: 'Chemistry', grade: 'Grade 9', teacher: 'Alibekova G.', date: 'Apr 25, 2026', type: 'PDF', downloads: 11, file: 'chem.pdf' },
+  { id: 5, title: 'The Cell — structure and functions', subject: 'Biology', grade: 'Grade 7', teacher: 'Seitk M.', date: 'Apr 24, 2026', type: 'PDF', downloads: 11, file: 'cell.pdf' },
+  { id: 6, title: 'Punctuation rules — collection', subject: 'Languages', grade: 'Grade 6', teacher: 'Ivanova A.', date: 'Apr 23, 2026', type: 'DOC', downloads: 5, file: 'punct.docx' },
+];
+
+let materials = JSON.parse(localStorage.getItem('edu_materials')) || defaultMaterials;
+
+function saveToStorage() {
+  localStorage.setItem('edu_materials', JSON.stringify(materials));
+  localStorage.setItem('total_downloads', totalDownloads);
+}
+
+function renderMaterials() {
+  const query = (document.getElementById('search-input').value || '').toLowerCase();
+  const grid = document.getElementById('materials-grid');
+  
+  const filtered = materials.filter(m => {
+    const matchFilter = currentFilter === 'all' || m.subject === currentFilter;
+    const matchSearch = !query || m.title.toLowerCase().includes(query) || m.subject.toLowerCase().includes(query) || m.grade.toLowerCase().includes(query);
+    return matchFilter && matchSearch;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><p>No materials found</p></div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(m => `
+    <div class="material-card">
+      <div class="card-top">
+        <span class="subject-tag ${SUBJECTS[m.subject] || ''}">${m.subject}</span>
+        <span class="file-badge ${FILE_BADGES[m.type] || 'badge-doc'}">${m.type}</span>
+      </div>
+      <div class="card-title">${m.title}</div>
+      <div class="card-meta">${m.grade} · ${m.teacher} · ${m.date}</div>
+      <div class="card-footer">
+        <span class="downloads-count">${m.downloads} downloads</span>
+        <button class="btn-download" onclick="openDownloadModal(${m.id})">Download</button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('stat-materials').textContent = materials.length;
+  document.getElementById('stat-downloads').textContent = totalDownloads;
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMaterials();
+}
+
+function filterMaterials() { renderMaterials(); }
+
+function switchMode(mode, btn) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const studentView = document.getElementById('student-view');
+  const teacherView = document.getElementById('teacher-view');
+  if (mode === 'student') {
+    studentView.style.display = 'block';
+    teacherView.style.display = 'none';
+    renderMaterials();
+  } else {
+    studentView.style.display = 'none';
+    teacherView.style.display = 'block';
+    renderMyMaterials();
+  }
+}
+
+function handleFileSelect(e) {
+  const f = e.target.files[0];
+  if (f) { selectedFile = f; document.getElementById('file-name').textContent = '📎 ' + f.name; }
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f) { selectedFile = f; document.getElementById('file-name').textContent = '📎 ' + f.name; }
+}
+
+function getFileType(name) {
+  const ext = name.split('.').pop().toLowerCase();
+  if (ext === 'pdf') return 'PDF';
+  if (ext === 'ppt' || ext === 'pptx') return 'PPT';
+  return 'DOC';
+}
+
+function uploadMaterial() {
+  const title = document.getElementById('t-title').value.trim();
+  const subject = document.getElementById('t-subject').value;
+  const grade = document.getElementById('t-class').value;
+  const teacher = document.getElementById('t-teacher').value.trim();
+  if (!title || !subject || !grade || !teacher || !selectedFile) {
+    showToast('Please fill all fields and select a file!'); return;
+  }
+  const type = getFileType(selectedFile.name);
+  const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  materials.unshift({ id: Date.now(), title, subject, grade, teacher, date, type, downloads: 0, file: selectedFile.name });
+  saveToStorage();
+  document.getElementById('t-title').value = '';
+  document.getElementById('file-name').textContent = '';
+  selectedFile = null;
+  showToast('Material uploaded successfully!');
+  renderMyMaterials();
+  renderMaterials();
+}
+
+function openDownloadModal(id) {
+  pendingDownload = id;
+  const m = materials.find(x => x.id === id);
+  document.getElementById('modal-title').textContent = 'Download file?';
+  document.getElementById('modal-body').textContent = `«${m.title}» — ${m.type}, ${m.grade}`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  pendingDownload = null;
+}
+
+function confirmDownload() {
+  const m = materials.find(x => x.id === pendingDownload);
+  if (m) {
+    m.downloads++;
+    totalDownloads++;
+    saveToStorage();
+    renderMaterials();
+    const blob = new Blob([`Content for ${m.title}`], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = m.file;
+    a.click();
+  }
+  closeModal();
+  showToast('Download started!');
+}
+
+function renderMyMaterials() {
+  const list = document.getElementById('my-materials-list');
+  if (!materials.length) { list.innerHTML = '<p style="color:var(--text-muted);font-size:14px;">No uploaded materials</p>'; return; }
+  list.innerHTML = materials.slice(0, 6).map(m => `
+    <div class="my-material-item">
+      <div class="my-material-icon ${FILE_BADGES[m.type] || 'badge-doc'}">${m.type}</div>
+      <div class="my-material-info">
+        <div class="my-material-name">${m.title}</div>
+        <div class="my-material-meta">${m.subject} · ${m.grade} · ${m.date}</div>
+      </div>
+      <div class="my-material-downloads">${m.downloads} ↓</div>
+    </div>
+  `).join('');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+setInterval(() => {
+  const el = document.getElementById('stat-online');
+  const current = parseInt(el.textContent);
+  const delta = Math.random() > 0.5 ? 1 : -1;
+  el.textContent = Math.max(15, Math.min(50, current + delta));
+}, 5000);
+
+renderMaterials();
+</script>
+</body>
+</html>

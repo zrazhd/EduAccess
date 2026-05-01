@@ -1,0 +1,27 @@
+{
+  "name": "educase",
+  "version": "1.0.0",
+  "description": "A simple platform that lets teachers share learning materials with students over a local school network — no internet needed.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "multer": "^2.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zrazhd/EduAccess.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zrazhd/EduAccess/issues"
+  },
+  "homepage": "https://github.com/zrazhd/EduAccess#readme"
+}
